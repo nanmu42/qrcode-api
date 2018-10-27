@@ -8,7 +8,6 @@
 package qrcode
 
 import (
-	"image/jpeg"
 	"io"
 
 	"github.com/pkg/errors"
@@ -16,18 +15,9 @@ import (
 	qrc "github.com/skip2/go-qrcode"
 )
 
-// query filed name
-const (
-	contentField = "content"
-	typeField    = "type"
-	sizeField    = "size"
-)
-
 const (
 	// TypePNG file as png
 	TypePNG = "png"
-	// TypeJPEG file as jpeg
-	TypeJPEG = "jepg"
 	// TypeString QRCode
 	TypeString = "string"
 
@@ -35,8 +25,8 @@ const (
 	DefaultType = TypePNG
 )
 
-// QREncodeRequest holds info for QR code encoding
-type QREncodeRequest struct {
+// QREncoder holds info for QR code encoding
+type QREncoder struct {
 	// content to encode
 	Content string
 	// desired encoding type
@@ -46,7 +36,7 @@ type QREncodeRequest struct {
 }
 
 // Encode produces a QR code
-func (q *QREncodeRequest) Encode(dest io.Writer) (gotType string, err error) {
+func (q *QREncoder) Encode(dest io.Writer) (gotType string, err error) {
 	qrcode, err := qrc.New(q.Content, qrc.Medium)
 	if err != nil {
 		err = errors.Wrap(err, "cannot get a QR Code instance")
@@ -56,14 +46,9 @@ func (q *QREncodeRequest) Encode(dest io.Writer) (gotType string, err error) {
 	case TypePNG:
 		gotType = TypePNG
 		err = qrcode.Write(q.Size, dest)
-	case TypeJPEG:
-		gotType = TypeJPEG
-		err = jpeg.Encode(dest, qrcode.Image(q.Size), &jpeg.Options{
-			Quality: 80,
-		})
 	case TypeString:
 		gotType = TypeString
-		_, err = dest.Write([]byte(qrcode.ToString(false)))
+		_, err = dest.Write([]byte(qrcode.ToString(true)))
 	}
 	return
 }
@@ -71,14 +56,9 @@ func (q *QREncodeRequest) Encode(dest io.Writer) (gotType string, err error) {
 // fileTypeCheck checks incoming types
 func fileTypeCheck(want string) string {
 	switch want {
-	case TypePNG, TypeJPEG, TypeString:
+	case TypePNG, TypeString:
 		return want
 	default:
 		return DefaultType
 	}
-}
-
-// lack is a dummy error provider
-func lack(field string) error {
-	return errors.New("lack of field " + field)
 }

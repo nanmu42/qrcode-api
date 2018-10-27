@@ -8,6 +8,7 @@
 package main
 
 import (
+	"bytes"
 	"context"
 	"fmt"
 	"net/http"
@@ -16,6 +17,8 @@ import (
 	"sync/atomic"
 	"syscall"
 	"time"
+
+	"github.com/nanmu42/qrcode-api"
 
 	"go.uber.org/zap"
 
@@ -126,5 +129,29 @@ func RequestLogger(l *zap.Logger) gin.HandlerFunc {
 
 // EncodeQRCode controller to encode QR code per request
 func EncodeQRCode(c *gin.Context) {
+	var err error
 
+	encoder, err := ParseEncodeRequest(c.Request.URL.Query())
+	if err != nil {
+		c.Error(err)
+		c.String(http.StatusBadRequest, "%s", err.Error())
+		return
+	}
+
+	var buf bytes.Buffer
+	gotType, err := encoder.Encode(&buf)
+	if err != nil {
+		c.Error(err)
+		c.String(http.StatusInternalServerError, "%s", err.Error())
+		return
+	}
+
+	switch gotType {
+	case qrcode.TypePNG:
+		c.DataFromReader(http.StatusOK, int64(buf.Len()), "image/png", &buf, map[string]string{})
+	case qrcode.TypeString:
+		c.DataFromReader(http.StatusOK, int64(buf.Len()), "text/plain; charset=utf-8", &buf, map[string]string{})
+	}
+
+	return
 }

@@ -7,7 +7,7 @@ require (
 	github.com/mattn/go-isatty v0.0.4 // indirect
 	github.com/pelletier/go-toml v1.2.0
 	github.com/pkg/errors v0.8.0
-	github.com/skip2/go-qrcode v0.0.0-20171229120447-cf5f9fa2f0d8 // indirect
+	github.com/skip2/go-qrcode v0.0.0-20171229120447-cf5f9fa2f0d8
 	github.com/spf13/viper v1.2.1
 	github.com/ugorji/go/codec v0.0.0-20181022190402-e5e69e061d4f // indirect
 	go.uber.org/atomic v1.3.2 // indirect

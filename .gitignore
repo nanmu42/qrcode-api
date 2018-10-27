@@ -14,5 +14,11 @@
 # IDEs
 /.idea
 
+# logs
+*.log
+
+# config files
+config.toml
+
 # Binaries
 /cmd/api/qrcode-api
