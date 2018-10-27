@@ -25,6 +25,7 @@ func main() {
 		}
 	}()
 
+	C.DefaultEncodeWidth = 360
 	C.MaxEncodeWidth = 800
 	C.MaxDecodeFileSize = 512
 

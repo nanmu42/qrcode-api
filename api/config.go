@@ -28,7 +28,9 @@ type Setting struct {
 	Port string
 	// verbose mode
 	Debug bool
-	// max image size for QR code encode
+	// default image size for QR code encoding
+	DefaultEncodeWidth int
+	// max image size for QR code encoding
 	MaxEncodeWidth int
 	// max image file size for QR code decode in KiB
 	MaxDecodeFileSize int
