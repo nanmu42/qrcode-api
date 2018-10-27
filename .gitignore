@@ -15,4 +15,4 @@
 /.idea
 
 # Binaries
-/api/qrcode-api
+/cmd/api/qrcode-api
