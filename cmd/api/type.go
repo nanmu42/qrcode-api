@@ -39,3 +39,10 @@ func ParseEncodeRequest(values url.Values) (encoder qrcode.QREncoder, err error)
 	encoder.Type = values.Get(typeField)
 	return
 }
+
+// DecodeResponse content holder for response
+type DecodeResponse struct {
+	OK      bool     `json:"ok"`
+	Desc    string   `json:"desc"`
+	Content []string `json:"content"`
+}

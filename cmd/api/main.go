@@ -28,6 +28,9 @@ var (
 	BuildDate string
 )
 
+// maxDecodeFileByte is MaxDecodeFileSize's byte version
+var maxDecodeFileByte int64
+
 func init() {
 	w := common.NewBufferedLumberjack(&lumberjack.Logger{
 		Filename:   "qrcode-api.log",
@@ -48,6 +51,7 @@ func main() {
 	defer logger.Sync()
 	defer func() {
 		if err != nil {
+			fmt.Println(err)
 			logger.Fatal("fatal error",
 				zap.Error(err),
 			)
@@ -66,6 +70,8 @@ built on %s
 		err = errors.Wrap(err, "C.LoadFrom")
 		return
 	}
+
+	maxDecodeFileByte = int64(C.MaxDecodeFileSize << 10)
 
 	router := setupRouter()
 	startAPI(router, C.Port)

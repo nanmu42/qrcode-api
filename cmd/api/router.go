@@ -11,12 +11,20 @@ import (
 	"bytes"
 	"context"
 	"fmt"
+	"image"
+	"io"
 	"net/http"
 	"os"
 	"os/signal"
 	"sync/atomic"
 	"syscall"
 	"time"
+
+	"github.com/pkg/errors"
+
+	_ "image/gif"
+	_ "image/jpeg"
+	_ "image/png"
 
 	"github.com/nanmu42/qrcode-api"
 
@@ -47,6 +55,7 @@ func setupRouter() (router *gin.Engine) {
 
 	// setup routes
 	router.GET("/encode", EncodeQRCode)
+	router.POST("/decode", DecodeQRCode)
 	return
 }
 
@@ -134,7 +143,7 @@ func EncodeQRCode(c *gin.Context) {
 	encoder, err := ParseEncodeRequest(c.Request.URL.Query())
 	if err != nil {
 		c.Error(err)
-		c.String(http.StatusBadRequest, "%s", err.Error())
+		c.String(http.StatusBadRequest, err.Error())
 		return
 	}
 
@@ -142,7 +151,7 @@ func EncodeQRCode(c *gin.Context) {
 	gotType, err := encoder.Encode(&buf)
 	if err != nil {
 		c.Error(err)
-		c.String(http.StatusInternalServerError, "%s", err.Error())
+		c.String(http.StatusInternalServerError, err.Error())
 		return
 	}
 
@@ -152,6 +161,78 @@ func EncodeQRCode(c *gin.Context) {
 	case qrcode.TypeString:
 		c.DataFromReader(http.StatusOK, int64(buf.Len()), "text/plain; charset=utf-8", &buf, map[string]string{})
 	}
+
+	return
+}
+
+// DecodeQRCode controller to decode QR Code
+func DecodeQRCode(c *gin.Context) {
+	var err error
+
+	// avoid too big image
+	if c.Request.ContentLength >= maxDecodeFileByte {
+		err = errors.New("request is too big(content-length)")
+		c.Error(err)
+		c.JSON(http.StatusOK, DecodeResponse{
+			OK:      false,
+			Desc:    "request is too big",
+			Content: nil,
+		})
+		return
+	}
+	var buf bytes.Buffer
+	_, readErr := io.CopyN(&buf, c.Request.Body, maxDecodeFileByte)
+	if readErr == nil {
+		err = errors.New("request is too big(actually read)")
+		c.Error(err)
+		c.JSON(http.StatusOK, DecodeResponse{
+			OK:      false,
+			Desc:    "request is too big",
+			Content: nil,
+		})
+		return
+	}
+	if readErr != io.EOF {
+		err = errors.Wrap(readErr, "body read error")
+		c.Error(err)
+		c.JSON(http.StatusOK, DecodeResponse{
+			OK:      false,
+			Desc:    err.Error(),
+			Content: nil,
+		})
+		return
+	}
+
+	// decode image
+	input, _, err := image.Decode(&buf)
+	if err != nil {
+		err = errors.Wrap(err, "file decoding error")
+		c.Error(err)
+		c.JSON(http.StatusOK, DecodeResponse{
+			OK:      false,
+			Desc:    err.Error(),
+			Content: nil,
+		})
+		return
+	}
+
+	contents, err := qrcode.DecodeQRCode(input)
+	if err != nil {
+		err = errors.Wrap(err, "QR Code scanning error")
+		c.Error(err)
+		c.JSON(http.StatusOK, DecodeResponse{
+			OK:      false,
+			Desc:    err.Error(),
+			Content: nil,
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, DecodeResponse{
+		OK:      true,
+		Desc:    "",
+		Content: contents,
+	})
 
 	return
 }
