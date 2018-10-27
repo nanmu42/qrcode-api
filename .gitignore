@@ -13,3 +13,6 @@
 
 # IDEs
 /.idea
+
+# Binaries
+/api/qrcode-api
