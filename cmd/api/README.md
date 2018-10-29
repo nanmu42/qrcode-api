@@ -1,7 +1,5 @@
 # QR Code API
 
-A simple API service for QR Code generation/recognition
-
 ## Encoding
 
 Request:
@@ -80,17 +78,16 @@ Something is wrong:
 
 Something unexpected happened.
 
-# Build and Run
+# Build
 
-Install and compile ZBar:
+You need have Zbar library installed, whose details can be found at `README.md` in project root.
 
 ```bash
-wget https://downloads.sourceforge.net/project/zbar/zbar/0.10/zbar-0.10.tar.bz2
-tar -xf zbar-0.10.tar.bz2
-cd zbar-0.10
-export CFLAGS=""
-./configure --disable-video --without-imagemagick --without-qt --without-python --without-gtk --without-x --disable-pthread
-make install
+./build.sh
 ```
 
-Go to `cmd/api` or `cmd/bearychat`. More details are in README.md there.
+# Run
+
+```bash
+./run.sh
+```
