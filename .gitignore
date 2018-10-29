@@ -22,3 +22,4 @@ config.toml
 
 # Binaries
 /cmd/api/qrcode-api
+/cmd/bearychat/qrcode-bot
