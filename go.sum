@@ -27,6 +27,8 @@ github.com/nanmu42/bearychat-go v0.0.0-20181028160721-24747bedfc23 h1:4ISqsZMZEr
 github.com/nanmu42/bearychat-go v0.0.0-20181028160721-24747bedfc23/go.mod h1:HRXo8BIFvS0DVlL0wccIMFTrrjw1GwZU3MNbizZiz/s=
 github.com/nanmu42/bearychat-go v0.0.0-20181028171701-b59821d6f27b h1:cCUVmCabSvFtIsSFygZThV+bi3m9qrSPgu3p7GuKtbk=
 github.com/nanmu42/bearychat-go v0.0.0-20181028171701-b59821d6f27b/go.mod h1:HRXo8BIFvS0DVlL0wccIMFTrrjw1GwZU3MNbizZiz/s=
+github.com/nanmu42/bearychat-go v0.0.0-20181029073754-89d18cb5fcf8 h1:QoN+4cf2bJNgtcAD85wS8e3RYqw4QHeymSDyekK0wr8=
+github.com/nanmu42/bearychat-go v0.0.0-20181029073754-89d18cb5fcf8/go.mod h1:HRXo8BIFvS0DVlL0wccIMFTrrjw1GwZU3MNbizZiz/s=
 github.com/nanmu42/orly v1.0.1 h1:2VrFGrNFxR+sCsCMfV3yDORtipl7E71nqIQy3fiQPCU=
 github.com/nanmu42/orly v1.0.1/go.mod h1:leVn366TUaKkgNooT7EPhtJnAj8bLKTE2rNeVK6SVsk=
 github.com/pelletier/go-toml v1.2.0 h1:T5zMGML61Wp+FlcbWjRDT7yAxhJNAiPPLOFECq181zc=

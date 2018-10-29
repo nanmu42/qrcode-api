@@ -63,11 +63,12 @@ var (
 )
 
 const (
-	srctag       = "bearychat"
-	helpCommand  = "help"
-	helpContent  = "用法：\n* 二维码生成\n```@小码 {内容}```\n内容左右的空格和回车会被忽略。\n* 二维码识别\n群聊中，引用已发出的图片消息并`@小码`，私聊中可直接发送图片。\n提示：私聊中，`@小码`需要省略。"
-	helloCommand = "hello"
-	helloContent = "小码来啦！驾～ []~(￣▽￣)~*"
+	srctag          = "bearychat"
+	helpCommand     = "help"
+	helpContent     = "用法：\n* 二维码生成\n```@小码 {内容}```\n内容左右的空格和回车会被忽略。\n* 二维码识别\n群聊中，引用已发出的图片消息并`@小码`，私聊中可直接发送图片。\n提示：私聊中，`@小码`需要省略。"
+	helloCommand    = "hello"
+	helloContent    = "小码来啦！驾～ []~(￣▽￣)~*"
+	fileAPIEndpoint = "https://api.bearychat.com/v1/file.location?"
 )
 
 func init() {
@@ -174,12 +175,12 @@ built on %s
 				j, _ := json.Marshal(incoming)
 				fmt.Printf("received: %s\n", j)
 
-				if incoming.Type() == bearychat.RTMMessageTypeUpdateAttachments {
+				if incoming.Type() == bearychat.RTMMessageTypeUpdateAttachments ||
+					(incoming.Type() == bearychat.RTMMessageTypeP2PMessage && incoming.Text() == "上传了图片") {
 					// decode
 					file, badFile := incoming.ParseAttachedFile()
 					switch true {
 					case badFile != nil:
-						fmt.Println(badFile)
 						msgOpt.Text = "没能在您引用的消息中找到图片附件，您可以复制图片单独发一下再试试。:face_with_cowboy_hat:  \n" + helpContent
 					case file.Size >= C.MaxDecodeFileSize:
 						msgOpt.Text = "图片附件体积过大，抱歉。:ghost: "
@@ -257,10 +258,24 @@ func EncodeURL(content string) (URL string) {
 }
 
 // DownloadImageAndScan from imageURL and scan it
-func DownloadImageAndScan(imageURL string) (result []string, err error) {
-	resp, err := downloader.Get(imageURL)
+func DownloadImageAndScan(imageClue string) (result []string, err error) {
+	sepIdx := strings.LastIndex(imageClue, "/")
+	if sepIdx == -1 {
+		err = errors.New("imageURL malformed")
+		return
+	}
+	values := url.Values{
+		"file_key": []string{imageClue[sepIdx+1:]},
+		"token":    []string{C.RTMToken},
+	}
+	req, err := http.NewRequest(http.MethodGet, fileAPIEndpoint+values.Encode(), http.NoBody)
 	if err != nil {
-		err = errors.Wrap(err, "downloader.Get")
+		err = errors.Wrap(err, "http.NewRequest")
+		return
+	}
+	resp, err := downloader.Do(req)
+	if err != nil {
+		err = errors.Wrap(err, "downloader.Do")
 		return
 	}
 	defer resp.Body.Close()

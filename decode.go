@@ -9,6 +9,7 @@ package qrcode
 
 import (
 	"errors"
+	"fmt"
 	"image"
 
 	"github.com/PeterCxy/gozbar"
@@ -20,6 +21,16 @@ import (
 // got decoded.
 // content and err are both nil when no QR Code found.
 func DecodeQRCode(img image.Image) (content []string, err error) {
+	defer func() {
+		if fatal := recover(); fatal != nil {
+			if err == nil {
+				err = fmt.Errorf("fatal error: %v", fatal)
+			} else {
+				err = fmt.Errorf("fatal error : %v: %v", fatal, err)
+			}
+		}
+	}()
+
 	input := zbar.FromImage(img)
 
 	s := zbar.NewScanner()
@@ -28,6 +39,11 @@ func DecodeQRCode(img image.Image) (content []string, err error) {
 
 	if result < 0 {
 		err = errors.New("error occurred when scanning")
+		return
+	}
+
+	if result == 0 {
+		// no result
 		return
 	}
 

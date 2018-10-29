@@ -4,7 +4,7 @@ require (
 	github.com/PeterCxy/gozbar v0.0.0-20151016114418-0b38584c8ebd
 	github.com/bearyinnovative/bearychat-go v0.0.0-20181023025336-2a589fab3c0d
 	github.com/gin-gonic/gin v1.3.0
-	github.com/nanmu42/bearychat-go v0.0.0-20181028171701-b59821d6f27b
+	github.com/nanmu42/bearychat-go v0.0.0-20181029073754-89d18cb5fcf8
 	github.com/nanmu42/orly v1.0.1 // indirect
 	github.com/pelletier/go-toml v1.2.0
 	github.com/pkg/errors v0.8.0
