@@ -14,7 +14,6 @@ package main
 import (
 	"bytes"
 	"context"
-	"encoding/json"
 	"flag"
 	"fmt"
 	"image"
@@ -172,8 +171,8 @@ built on %s
 					VChannelID: vChannelID,
 				}
 
-				j, _ := json.Marshal(incoming)
-				fmt.Printf("received: %s\n", j)
+				// j, _ := json.Marshal(incoming)
+				// fmt.Printf("received: %s\n", j)
 
 				if incoming.Type() == bearychat.RTMMessageTypeUpdateAttachments ||
 					(incoming.Type() == bearychat.RTMMessageTypeP2PMessage && incoming.Text() == "上传了图片") {
@@ -191,9 +190,9 @@ built on %s
 						if badScan != nil {
 							msgOpt.Text = "哦噢，出错了。:dizzy_face: " + badScan.Error()
 						} else if len(scanningResult) == 0 {
-							msgOpt.Text = "没能在您的图片中找到二维码/条形码，小码会继续努力哒！ :kissing_heart: "
+							msgOpt.Text = "没能在您的图片中找到二维码/条形码，或者它们损坏了，小码会继续努力哒！ :kissing_heart: "
 						} else {
-							msgOpt.Text = ":sunglasses:  扫描结果：\n" + strings.Join(scanningResult, "\n")
+							msgOpt.Text = ":sunglasses:  扫描结果如下：\n" + strings.Join(scanningResult, "\n")
 						}
 					}
 					outgoing, _, badLuck := botAPI.Message.Create(ctx, &msgOpt)
