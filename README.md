@@ -1,6 +1,9 @@
 # QR Code API
 
-A simple API service for QR Code generation/recognition
+[![Go Report Card](https://goreportcard.com/badge/github.com/nanmu42/qrcode-api)](https://goreportcard.com/report/github.com/nanmu42/qrcode-api)
+[![GoDoc](https://godoc.org/github.com/nanmu42/qrcode-api?status.svg)](https://godoc.org/github.com/nanmu42/qrcode-api)
+
+A simple API service for QR Code generation/recognition.
 
 ## Encoding
 
@@ -94,3 +97,10 @@ make install
 ```
 
 Go to `cmd/api` or `cmd/bearychat`. More details are in README.md there.
+
+# License
+
+Copyright (c) 2018 LI Zhennan
+
+Use of this work is governed by an MIT License.
+You may find a license copy in project root.
