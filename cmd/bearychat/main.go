@@ -272,6 +272,7 @@ func DownloadImageAndScan(imageClue string) (result []string, err error) {
 		err = errors.Wrap(err, "http.NewRequest")
 		return
 	}
+	req.Header.Set("User-Agent", "QR Code Bot(XiaoMa)"+Version)
 	resp, err := downloader.Do(req)
 	if err != nil {
 		err = errors.Wrap(err, "downloader.Do")
