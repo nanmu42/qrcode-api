@@ -173,7 +173,8 @@ func DecodeQRCode(c *gin.Context) {
 	if c.Request.ContentLength >= maxDecodeFileByte {
 		err = errors.New("request is too big(content-length)")
 		c.Error(err)
-		c.JSON(http.StatusOK, DecodeResponse{
+		c.Request.Body.Close()
+		c.JSON(http.StatusRequestEntityTooLarge, DecodeResponse{
 			OK:      false,
 			Desc:    "request is too big",
 			Content: nil,
@@ -185,7 +186,8 @@ func DecodeQRCode(c *gin.Context) {
 	if readErr == nil {
 		err = errors.New("request is too big(actually read)")
 		c.Error(err)
-		c.JSON(http.StatusOK, DecodeResponse{
+		c.Request.Body.Close()
+		c.JSON(http.StatusRequestEntityTooLarge, DecodeResponse{
 			OK:      false,
 			Desc:    "request is too big",
 			Content: nil,
