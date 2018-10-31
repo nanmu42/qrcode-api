@@ -41,6 +41,7 @@ RUN set -eux; \
     mkdir -p "/qrcode/configs"
 
 COPY --from=builder /usr/local/include/zbar.h /usr/local/include/
+COPY --from=builder /usr/local/lib/libzbar* /usr/local/lib/
 COPY --from=builder /usr/local/lib/pkgconfig/* /usr/local/lib/pkgconfig/
 COPY --from=builder /usr/local/include/zbar/* /usr/local/include/zbar/
 COPY --from=builder /qrcode-api/cmd/api/qrcode-api /qrcode/
