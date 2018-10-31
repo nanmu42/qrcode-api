@@ -15,5 +15,7 @@ You need have Zbar library installed, whose details can be found at `README.md` 
 # Run
 
 ```bash
+cp config_example.toml config.toml
+# after editing config.toml per your need
 ./run.sh
 ```

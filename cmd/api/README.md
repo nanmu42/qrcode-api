@@ -74,6 +74,10 @@ Something is wrong:
 }
 ```
 
+* HTTP status 413 Request Entity Too Large
+
+Request Body is too large.
+
 * HTTP status 500
 
 Something unexpected happened.
@@ -89,5 +93,7 @@ You need have Zbar library installed, whose details can be found at `README.md` 
 # Run
 
 ```bash
+cp config_example.toml config.toml
+# after editing config.toml per your need
 ./run.sh
 ```

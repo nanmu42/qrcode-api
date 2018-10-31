@@ -2,8 +2,13 @@
 
 [![Go Report Card](https://goreportcard.com/badge/github.com/nanmu42/qrcode-api)](https://goreportcard.com/report/github.com/nanmu42/qrcode-api)
 [![GoDoc](https://godoc.org/github.com/nanmu42/qrcode-api?status.svg)](https://godoc.org/github.com/nanmu42/qrcode-api)
+[![Docker Image](https://img.shields.io/badge/Docker-image-blue.svg)](https://hub.docker.com/r/nanmu42/qrcode-api/)
 
 A simple API service for QR Code generation/recognition.
+
+This project provide Bearychat integration.
+
+# API Doc
 
 ## Encoding
 
@@ -79,16 +84,35 @@ Something is wrong:
 }
 ```
 
+* HTTP status 413 Request Entity Too Large
+
+Request Body is too large.
+
 * HTTP status 500
 
 Something unexpected happened.
 
+# Docker Image
+
+There is a [pre-compiled Docker image](https://hub.docker.com/r/nanmu42/qrcode-api/)
+alone with C++ dependencies(ZBar), you may pull the image like following:
+
+```bash
+docker pull nanmu42/qrcode-api
+```
+
+See `Docker` directory for `docker-compose.yaml` and more detail.
+
 # Build and Run
 
-Install and compile ZBar:
+If you'd like to get you hands dirty, you can build this project as following:
+
+Download and compile ZBar for shared dependencies:
 
 ```bash
 wget https://downloads.sourceforge.net/project/zbar/zbar/0.10/zbar-0.10.tar.bz2
+# or, if you are suffering decoding troubles on UTF-8, try this modified version:
+# wget https://github.com/nanmu42/zbar-utf8/archive/master.zip
 tar -xf zbar-0.10.tar.bz2
 cd zbar-0.10
 export CFLAGS=""
@@ -96,7 +120,7 @@ export CFLAGS=""
 make install
 ```
 
-Go to `cmd/api` or `cmd/bearychat`. More details are in README.md there.
+Go to `cmd/api` or `cmd/bearychat` for further instruction, more details are in README.md there.
 
 # License
 
