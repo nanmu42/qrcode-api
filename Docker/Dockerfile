@@ -34,6 +34,11 @@ FROM ubuntu:xenial
 ENV LD_LIBRARY_PATH /usr/local/lib
 
 RUN set -eux; \
+    apt update; \
+    apt install -y ca-certificates; \
+    rm -rf /var/lib/apt/lists/*
+
+RUN set -eux; \
     mkdir -p "/usr/local/include"; \
     mkdir -p "/usr/local/lib/pkgconfig"; \
     mkdir -p "/usr/local/include/zbar"; \
