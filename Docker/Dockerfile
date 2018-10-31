@@ -24,7 +24,7 @@ RUN set -eux; \
         cd qrcode-api; \
         go get; \
         ./cmd/api/build.sh; \
-        ./cmd/bearychat/build.sh; \
+        ./cmd/bearychat/build.sh
 
 FROM ubuntu:xenial
 
