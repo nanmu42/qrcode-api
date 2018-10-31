@@ -75,7 +75,7 @@ func init() {
 
 	configFile = flag.String("config", "config.toml", "config.toml file location for rly")
 	w := common.NewBufferedLumberjack(&lumberjack.Logger{
-		Filename:   "qrcode-bot.log",
+		Filename:   "logs/qrcode-bot.log",
 		MaxSize:    300, // megabytes
 		MaxBackups: 5,
 		MaxAge:     28, // days

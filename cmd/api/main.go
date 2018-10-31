@@ -33,7 +33,7 @@ var maxDecodeFileByte int64
 
 func init() {
 	w := common.NewBufferedLumberjack(&lumberjack.Logger{
-		Filename:   "qrcode-api.log",
+		Filename:   "logs/qrcode-api.log",
 		MaxSize:    300, // megabytes
 		MaxBackups: 5,
 		MaxAge:     28, // days
