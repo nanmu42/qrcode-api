@@ -1,0 +1,9 @@
+# Copy this file to create default config
+#
+# cp config_example.toml config.toml
+
+EncodeAPIEndpoint = "https://qrcode-api.nanmu.me/encode?"
+MaxDecodeFileSize = 819200
+MaxEncodeContentLength = 2048
+QRCodeSize = 500
+RTMToken = ""
