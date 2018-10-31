@@ -24,8 +24,10 @@ RUN set -eux; \
         git clone https://github.com/nanmu42/qrcode-api.git; \
         cd qrcode-api; \
         go get; \
-        ./cmd/api/build.sh; \
-        ./cmd/bearychat/build.sh
+        cd cmd/api; \
+        ./build.sh; \
+        cd ../bearychat; \
+        ./build.sh
 
 FROM ubuntu:xenial
 
@@ -41,8 +43,10 @@ RUN set -eux; \
 COPY --from=builder /usr/local/include/zbar.h /usr/local/include/
 COPY --from=builder /usr/local/lib/pkgconfig/* /usr/local/lib/pkgconfig/
 COPY --from=builder /usr/local/include/zbar/* /usr/local/include/zbar/
-COPY --from=builder /qrcode-api/qrcode-api /qrcode/
-COPY --from=builder /qrcode-api/qrcode-bot /qrcode/
+COPY --from=builder /qrcode-api/cmd/api/qrcode-api /qrcode/
+COPY --from=builder /qrcode-api/cmd/bearychat/qrcode-bot /qrcode/
+
+RUN chmod -R +x /qrcode/
 
 WORKDIR /qrcode
 

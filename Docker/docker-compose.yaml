@@ -10,15 +10,15 @@ services:
     expose:
     - "3100"
     volumes:
-    - ./configs:./configs
-    - ./logs:./logs
+    - ./configs:/qrcode/configs
+    - ./logs:/qrcode/logs
     stop_grace_period: 30s
 
   bot:
     image: nanmu42/qrcode-api
-      command: ./qrcode-bot -config ./configs/bot.toml
-      hostname: bot
-      volumes:
-      - ./configs:./configs
-      - ./logs:./logs
-      stop_grace_period: 30s
+    command: ./qrcode-bot -config ./configs/bot.toml
+    hostname: bot
+    volumes:
+    - ./configs:/qrcode/configs
+    - ./logs:/qrcode/logs
+    stop_grace_period: 30s
